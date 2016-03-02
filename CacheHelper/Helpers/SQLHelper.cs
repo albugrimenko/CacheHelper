@@ -109,8 +109,10 @@ namespace CacheHelper.Helpers {
 
                 cmd.Connection = connection;
                 SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                // returns either nothing or
+                //  ExpDate, ObjBody
                 if (dr != null && dr.HasRows && dr.Read()) {
-                    //DateTime expdate = Convert.ToDateTime(dr["ExpDate"].ToString()); // no use currently
+                    //DateTime expdate = Convert.ToDateTime(dr["ExpDate"].ToString()); // not currently used
                     byte[] objSer = (byte[]) dr["ObjBody"];
                     res = SerializationHelper.Object_DeSerializeBinary(objSer);
                 }
