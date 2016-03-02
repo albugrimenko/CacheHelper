@@ -1,0 +1,42 @@
+﻿USE [CacheDB] 
+GO
+/****** Object:  Table [dbo].[ObjectBody]    Script Date: 7/29/2015 10:11:40 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [dbo].[ObjectBody](
+	[ObjID] [int] NOT NULL,
+	[ObjBody] [varbinary](max) NOT NULL,
+ CONSTRAINT [PK_ObjectBody] PRIMARY KEY CLUSTERED 
+(
+	[ObjID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [ObjBLOB]
+) ON [ObjBLOB] TEXTIMAGE_ON [ObjBLOB]
+
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [dbo].[ObjectInfo]    Script Date: 7/29/2015 10:11:40 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [dbo].[ObjectInfo](
+	[ObjType] [varchar](100) NOT NULL,
+	[ObjKey] [varchar](36) NOT NULL,
+	[ID] [int] IDENTITY(1,1) NOT NULL,
+	[Created] [datetime] NOT NULL CONSTRAINT [DF_ObjectInfo_Created]  DEFAULT (getdate()),
+	[Expires] [datetime] NOT NULL,
+ CONSTRAINT [PK_ObjectInfo] PRIMARY KEY CLUSTERED 
+(
+	[ObjType] ASC,
+	[ObjKey] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
