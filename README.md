@@ -1,5 +1,7 @@
-# CacheHelper
+﻿# CacheHelper
 A simple helper class to maintain object type specific cache. It supports “remote” mode and allows to keep cached objects in a database (Microsoft SQL Server), which makes it accessible from multiple servers simultaneously.
+
+NOTE: "Remote" mode requires objects to implement ISerializable interface.
 
 ### The original author
 I have lost references to the original author of c# code. I remember that I found this project on CodeProject.com, but could not find that particular article... I apologize for that.
@@ -26,6 +28,26 @@ IMPORTANT: to achive better performance, SQL Server does NOT monitor cached obje
 * **exec Object_DeleteExpired	@IsCompleteReset = 1** - deletes all objects from the database. This stored procedure is useful to reset the cache database. 
 
 Based on a particular cache load, the schedule could be optimized to clean up all expired objects by running *Object_DeleteExpired* every 1, 2, 3... hours. In many instances pretty good results could be achieved with just resetting the cache once a day.
+
+### Configuration settings
+
+
+
+CacheDictionaryRemote and CacheDictionaryConcurRemote classes support both internal and SQL side caching. You can turn on or off either or both caches using constructor parameters isLocallyCacheable and isRemotelyCacheable.
+
+SQL side cache can also be turned on or off using app.config settings. SQL Side cache TTL (time to live) can also be set using app.config. Here is an example of appSettings section in app.config:
+
+<appSettings>
+
+  <add key="CacheSql.IsAllowed" value="true" />
+
+  <add key="CacheSql.TTLMin" value="1" />
+
+</appSettings>
+
+
+
+
 
 
 

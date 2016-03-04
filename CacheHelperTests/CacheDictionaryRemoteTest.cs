@@ -69,7 +69,7 @@ namespace CacheHelperTests {
 
         [TestMethod]
         public void DictionaryRemote_MultiThreading() {
-            int numberOfThreads = 10;
+            int numberOfThreads = 3;
             sb = new System.Text.StringBuilder();
             ErrHappened += CacheDictionaryRemoteTest_ErrHappened;
             StatusUpdate += CacheDictionaryRemoteTest_StatusUpdate;
@@ -102,6 +102,7 @@ namespace CacheHelperTests {
         public static void MT_AddGet(){
             int numberOfCycles = 5;
             int numberOfIterations = 100;
+            int delay_sec = 1;
 
             string threadName = "th";
 
@@ -113,7 +114,7 @@ namespace CacheHelperTests {
                         string key = (i * 333).ToString();
                         dictionary.Add(key, string.Format("Test_{0}_[{1}]", (i * j).ToString(), key));
                     }
-                    Thread.Sleep(500); // 0.5 sec
+                    Thread.Sleep(100); // 0.1 sec
                     // read
                     for (int i = 0; i < numberOfIterations; i++) {
                         string key = (i*333).ToString();
@@ -134,7 +135,8 @@ namespace CacheHelperTests {
                                 StatusUpdate(String.Format("{0}:: Object [{1}] retrieved.\r\n", threadName, key));
                         }
                     }
-                    Thread.Sleep(1000); // 1 sec
+                    if (delay_sec > 0)
+                        Thread.Sleep(delay_sec * 1000); // 1 sec = 1000 ms
                 } // j
             }
             return;

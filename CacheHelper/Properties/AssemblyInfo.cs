@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("CacheHelper")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("stock2own.com, LLC.")]
+[assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("CacheHelper")]
 [assembly: AssemblyCopyright("Copyright © Alex Bugrimenko 2013")]
 [assembly: AssemblyTrademark("")]

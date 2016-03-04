@@ -1,0 +1,24 @@
+﻿USE [CacheDB] 
+GO
+CREATE TABLE [dbo].[ObjectInfo](
+	[ObjType] [varchar](100) NOT NULL,
+	[ObjKey] [varchar](36) NOT NULL,
+	[ID] [int] IDENTITY(1,1) NOT NULL,
+	[Created] [datetime] NOT NULL,
+	[Expires] [datetime] NOT NULL,
+CONSTRAINT [PK_ObjectInfo] PRIMARY KEY NONCLUSTERED HASH
+(
+	[ObjType],[ObjKey]
+) WITH (BUCKET_COUNT = 100000)) 
+WITH (MEMORY_OPTIMIZED = ON, DURABILITY = SCHEMA_AND_DATA)
+GO
+CREATE TABLE [dbo].[ObjectBody](
+	[ObjID] [int] NOT NULL,
+	[ObjBody] [varbinary](max) NOT NULL,
+ CONSTRAINT [PK_ObjectBody] PRIMARY KEY CLUSTERED 
+(
+	[ObjID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [ObjBLOB]
+) ON [ObjBLOB] TEXTIMAGE_ON [ObjBLOB]
+
+GO

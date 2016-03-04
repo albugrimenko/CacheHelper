@@ -1,4 +1,5 @@
-﻿/****** Object:  StoredProcedure [dbo].[Object_Del]    Script Date: 7/29/2015 10:11:40 AM ******/
+﻿USE [CacheDB] 
+GO
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -17,7 +18,7 @@ set xact_abort on;
 declare @objID int
 
 BEGIN TRY
-	set transaction isolation level SERIALIZABLE;
+	--set transaction isolation level SERIALIZABLE;
 	BEGIN TRAN
 		
 		select @objID = ID from ObjectInfo where ObjType = @ObjType and ObjKey = @ObjKey
@@ -49,7 +50,6 @@ RETURN 1
 GO
 GRANT EXECUTE ON [dbo].[Object_Del] TO [public] AS [dbo]
 GO
-/****** Object:  StoredProcedure [dbo].[Object_DeleteExpired]    Script Date: 7/29/2015 10:11:40 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -85,7 +85,6 @@ BEGIN TRY
 		from ObjectInfo (nolock)
 		where Expires < @d
 
-		set transaction isolation level SERIALIZABLE;
 		BEGIN TRAN
 
 			delete ObjectBody where ObjID in (select ObjID from @t)
@@ -116,12 +115,11 @@ RETURN 1
 GO
 GRANT EXECUTE ON [dbo].[Object_DeleteExpired] TO [public] AS [dbo]
 GO
-/****** Object:  StoredProcedure [dbo].[Object_Get]    Script Date: 7/29/2015 10:11:40 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-ALTER PROCEDURE [dbo].[Object_Get]
+CREATE PROCEDURE [dbo].[Object_Get]
 	@ObjType varchar(100), @ObjKey varchar(36)
 
 --
@@ -130,7 +128,6 @@ ALTER PROCEDURE [dbo].[Object_Get]
 
 AS
 set nocount on;
-set transaction isolation level snapshot;
 
 declare @objID int, 
 	@dExp datetime,
@@ -160,7 +157,6 @@ RETURN 1
 GO
 GRANT EXECUTE ON [dbo].[Object_Get] TO [public] AS [dbo]
 GO
-/****** Object:  StoredProcedure [dbo].[Object_GetCurrentStat]    Script Date: 7/29/2015 10:11:40 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -168,8 +164,7 @@ GO
 CREATE PROCEDURE [dbo].[Object_GetCurrentStat]
 
 AS
-set nocount on;
-set transaction isolation level snapshot;
+set nocount on
 
 select 
 	i.ObjType,
@@ -179,7 +174,7 @@ select
 	SizeAvg = avg(datalength(b.ObjBody)),
 	ExpTimeMin = min(i.Expires),
 	ExpTimeMax = max(i.Expires)
-from ObjectInfo i
+from ObjectInfo i 
 	left join ObjectBody b on i.ID = b.ObjID
 group by i.ObjType
 order by i.ObjType
@@ -188,7 +183,6 @@ RETURN 1
 GO
 GRANT EXECUTE ON [dbo].[Object_GetCurrentStat] TO [public] AS [dbo]
 GO
-/****** Object:  StoredProcedure [dbo].[Object_Put]    Script Date: 7/29/2015 10:11:40 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -216,7 +210,7 @@ declare @objID int,
 declare @dExp datetime = dateadd(minute, @TTL_min, @d)
 
 BEGIN TRY
-	set transaction isolation level SERIALIZABLE;
+	--set transaction isolation level SNAPSHOT;
 	BEGIN TRAN
 		
 		update ObjectInfo set @objID = ID, Expires = @dExp where ObjType = @ObjType and ObjKey = @ObjKey
@@ -257,7 +251,6 @@ RETURN 1
 GO
 GRANT EXECUTE ON [dbo].[Object_Put] TO [public] AS [dbo]
 GO
-/****** Object:  StoredProcedure [dbo].[Object_ResetExpiration]    Script Date: 7/29/2015 10:11:40 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
