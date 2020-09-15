@@ -24,6 +24,12 @@ namespace CacheHelper {
             _IsRemotelyCacheable = isRemotelyCacheable;
             _IsLocallyCacheable = isLocallyCacheable;
         }
+        
+        public CacheDictionaryConcurRemote(TimeSpan defaultTimeToLive, bool isLocallyCacheable = true, bool isRemotelyCacheable = true)
+            : base(defaultTimeToLive) {
+            _IsRemotelyCacheable = isRemotelyCacheable;
+            _IsLocallyCacheable = isLocallyCacheable;
+        }
         #endregion --- Constructors ---
 
         #region --- Properties ---
